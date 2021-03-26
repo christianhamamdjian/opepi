@@ -11,7 +11,14 @@
   define("PUBLIC_PATH", PROJECT_PATH . '/public');
   define("SHARED_PATH", PRIVATE_PATH . '/shared');
 
+  $local = in_array($_SERVER['REMOTE_ADDR'],array('127.0.0.1','REMOTE_ADDR' => '::1'));
+if (!$local) {	
+  $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public');
+  }
+else {
   $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public') + 28;
+  }
+  
   $doc_root = substr($_SERVER['SCRIPT_NAME'], 0, $public_end);
   define("WWW_ROOT", $doc_root);
 
