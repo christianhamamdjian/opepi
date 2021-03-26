@@ -382,7 +382,7 @@ table tfoot {
   padding: 1em;
 }
 
-/* Service blocks on homekurssi 
+/* Service blocks on homekurssi */
 
 #service-blocks {
   margin-top: 50px;
@@ -405,7 +405,7 @@ a.learnmore {
 
 a.learnmore:hover {
   text-decoration: underline
-}*/
+}
 
 
 /* small tablet styles */
