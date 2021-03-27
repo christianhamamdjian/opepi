@@ -162,6 +162,171 @@
     }
   }
 
+
+  function find_all_opiskelijat($options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM opiskelijat ";
+    if($visible) {
+      $sql .= "WHERE visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function find_opiskelija_by_id($id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM opiskelijat ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true";
+    }
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $opiskelija = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $opiskelija; 
+  }
+
+  function validate_opiskelija($opiskelija) {
+    $errors = [];
+
+    if(is_blank($opiskelija['menu_name'])) {
+      $errors[] = "Name cannot be blank.";
+    } elseif(!has_length($opiskelija['menu_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Name must be between 2 and 255 characters.";
+    }
+
+    $postion_int = (int) $opiskelija['position'];
+    if($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+    }
+    if($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+    }
+
+    $visible_str = (string) $opiskelija['visible'];
+    if(!has_inclusion_of($visible_str, ["0","1"])) {
+      $errors[] = "Visible must be true or false.";
+    }
+
+    return $errors;
+  }
+
+  function insert_opiskelija($opiskelija) {
+    global $db;
+
+    $errors = validate_opiskelija($opiskelija);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    shift_opiskelija_positions(0, $opiskelija['position']);
+    $sql = "INSERT INTO opiskelijat ";
+    $sql .= "(menu_name, position, visible) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $opiskelija['menu_name']) . "',";
+    $sql .= "'" . db_escape($db, $opiskelija['position']) . "',";
+    $sql .= "'" . db_escape($db, $opiskelija['visible']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function update_opiskelija($opiskelija) {
+    global $db;
+    $errors = validate_opiskelija($opiskelija);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    $old_opiskelija = find_opiskelija_by_id($opiskelija['id']);
+    $old_position = $old_opiskelija['position'];
+    shift_opiskelija_positions($old_position, $opiskelija['position'], $opiskelija['id']);
+    $sql = "UPDATE opiskelijat SET ";
+    $sql .= "menu_name='" . db_escape($db, $opiskelija['menu_name']) . "', ";
+    $sql .= "position='" . db_escape($db, $opiskelija['position']) . "', ";
+    $sql .= "visible='" . db_escape($db, $opiskelija['visible']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $opiskelija['id']) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+
+  }
+
+  function delete_opiskelija($id) {
+    global $db;
+    $old_opiskelija = find_opiskelija_by_id($id);
+    $old_position = $old_opiskelija['position'];
+    shift_opiskelija_positions($old_position, 0, $id);
+    $sql = "DELETE FROM opiskelijat ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function shift_opiskelija_positions($start_pos, $end_pos, $current_id=0) {
+    global $db;
+
+    if($start_pos == $end_pos) { return; }
+
+    $sql = "UPDATE opiskelijat ";
+    if($start_pos == 0) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($end_pos == 0) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+    } elseif($start_pos < $end_pos) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+      $sql .= "AND position <= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($start_pos > $end_pos) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+      $sql .= "AND position < '" . db_escape($db, $start_pos) . "' ";
+    }
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "' ";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+
+
   function find_all_kurssit() {
     global $db;
     $sql = "SELECT * FROM kurssit ";
@@ -373,6 +538,220 @@
       exit;
     }
   }
+
+
+  function find_all_tehtavat() {
+    global $db;
+    $sql = "SELECT * FROM tehtavat ";
+    $sql .= "ORDER BY opiskelija_id ASC, position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function find_tehtava_by_id($id, $options=[]) {
+    global $db;
+    $visible = $options['visible'] ?? false;
+    $sql = "SELECT * FROM tehtavat ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true";
+    }
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $tehtava = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $tehtava; 
+  }
+
+  function validate_tehtava($tehtava) {
+    $errors = [];
+    if(is_blank($tehtava['opiskelija_id'])) {
+      $errors[] = "opiskelija cannot be blank.";
+    }
+    if(is_blank($tehtava['menu_name'])) {
+      $errors[] = "Name cannot be blank.";
+    } elseif(!has_length($tehtava['menu_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Name must be between 2 and 255 characters.";
+    }
+    $current_id = $tehtava['id'] ?? '0';
+    if(!has_unique_tehtava_menu_name($tehtava['menu_name'], $current_id)) {
+      $errors[] = "Menu name must be unique.";
+    }
+
+
+    $postion_int = (int) $tehtava['position'];
+    if($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+    }
+    if($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+    }
+
+    $visible_str = (string) $tehtava['visible'];
+    if(!has_inclusion_of($visible_str, ["0","1"])) {
+      $errors[] = "Visible must be true or false.";
+    }
+
+    // content
+    if(is_blank($tehtava['content'])) {
+      $errors[] = "Content cannot be blank.";
+    }
+
+    return $errors;
+  }
+
+  function insert_tehtava($tehtava) {
+    global $db;
+
+    $errors = validate_tehtava($tehtava);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    shift_tehtava_positions(0, $tehtava['position'], $tehtava['opiskelija_id']);
+
+    $sql = "INSERT INTO tehtavat ";
+    $sql .= "(opiskelija_id, menu_name, position, visible, content) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $tehtava['opiskelija_id']) . "',";
+    $sql .= "'" . db_escape($db, $tehtava['menu_name']) . "',";
+    $sql .= "'" . db_escape($db, $tehtava['position']) . "',";
+    $sql .= "'" . db_escape($db, $tehtava['visible']) . "',";
+    $sql .= "'" . db_escape($db, $tehtava['content']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function update_tehtava($tehtava) {
+    global $db;
+
+    $errors = validate_tehtava($tehtava);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    $old_tehtava = find_tehtava_by_id($tehtava['id']);
+    $old_position = $old_tehtava['position'];
+    shift_tehtava_positions($old_position, $tehtava['position'], $tehtava['opiskelija_id'], $tehtava['id']);
+
+    $sql = "UPDATE tehtavat SET ";
+    $sql .= "opiskelija_id='" . db_escape($db, $tehtava['opiskelija_id']) . "', ";
+    $sql .= "menu_name='" . db_escape($db, $tehtava['menu_name']) . "', ";
+    $sql .= "position='" . db_escape($db, $tehtava['position']) . "', ";
+    $sql .= "visible='" . db_escape($db, $tehtava['visible']) . "', ";
+    $sql .= "content='" . db_escape($db, $tehtava['content']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $tehtava['id']) . "' ";
+    $sql .= "LIMIT 1";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+
+  }
+
+  function delete_tehtava($id) {
+    global $db;
+
+    $old_tehtava = find_tehtava_by_id($id);
+    $old_position = $old_tehtava['position'];
+    shift_tehtava_positions($old_position, 0, $old_tehtava['opiskelija_id'], $id);
+
+    $sql = "DELETE FROM tehtavat ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function find_tehtavat_by_opiskelija_id($opiskelija_id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM tehtavat ";
+    $sql .= "WHERE opiskelija_id='" . db_escape($db, $opiskelija_id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function count_tehtavat_by_opiskelija_id($opiskelija_id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT COUNT(id) FROM tehtavat ";
+    $sql .= "WHERE opiskelija_id='" . db_escape($db, $opiskelija_id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $row = mysqli_fetch_row($result);
+    mysqli_free_result($result);
+    $count = $row[0];
+    return $count;
+  }
+
+  function shift_tehtava_positions($start_pos, $end_pos, $opiskelija_id, $current_id=0) {
+    global $db;
+
+    if($start_pos == $end_pos) { return; }
+
+    $sql = "UPDATE tehtavat ";
+    if($start_pos == 0) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($end_pos == 0) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+    } elseif($start_pos < $end_pos) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+      $sql .= "AND position <= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($start_pos > $end_pos) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+      $sql .= "AND position < '" . db_escape($db, $start_pos) . "' ";
+    }
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "' ";
+    $sql .= "AND opiskelija_id = '" . db_escape($db, $opiskelija_id) . "'";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
 
 
   function find_all_admins() {

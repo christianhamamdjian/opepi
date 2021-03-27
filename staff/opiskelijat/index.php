@@ -5,10 +5,9 @@
   require_login();
 
   $opiskelija_set = find_all_opiskelijat();
-
 ?>
 
-<?php $kurssi_title = 'opiskelijat'; ?>
+<?php $tehtava_title = 'opiskelijat'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
@@ -25,20 +24,20 @@
         <th>Position</th>
         <th>Visible</th>
   	    <th>Name</th>
-        <th>kurssit</th>
+        <th>tehtavat</th>
   	    <th>&nbsp;</th>
   	    <th>&nbsp;</th>
         <th>&nbsp;</th>
   	  </tr>
 
       <?php while($opiskelija = mysqli_fetch_assoc($opiskelija_set)) { ?>
-        <?php $kurssi_count = count_kurssit_by_opiskelija_id($opiskelija['id']); ?>
+        <?php $tehtava_count = count_tehtavat_by_opiskelija_id($opiskelija['id']); ?>
         <tr>
           <td><?php echo h($opiskelija['id']); ?></td>
           <td><?php echo h($opiskelija['position']); ?></td>
           <td><?php echo $opiskelija['visible'] == 1 ? 'true' : 'false'; ?></td>
     	    <td><?php echo h($opiskelija['menu_name']); ?></td>
-          <td><?php echo $kurssi_count; ?></td>
+          <td><?php echo $tehtava_count; ?></td>
           <td><a class="action" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($opiskelija['id']))); ?>">View</a></td>
           <td><a class="action" href="<?php echo url_for('/staff/opiskelijat/edit.php?id=' . h(u($opiskelija['id']))); ?>">Edit</a></td>
           <td><a class="action" href="<?php echo url_for('/staff/opiskelijat/delete.php?id=' . h(u($opiskelija['id']))); ?>">Delete</a></td>

@@ -5,7 +5,7 @@ require_once('../../private/initialize.php');
 require_login();
 
 if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/kurssit/index.php'));
+  redirect_to(url_for('/staff/tehtavat/index.php'));
 }
 $id = $_GET['id'];
 
@@ -13,45 +13,45 @@ if(is_post_request()) {
 
   // Handle form values sent by new.php
 
-  $kurssi = [];
-  $kurssi['id'] = $id;
-  $kurssi['opettaja_id'] = $_POST['opettaja_id'] ?? '';
-  $kurssi['menu_name'] = $_POST['menu_name'] ?? '';
-  $kurssi['position'] = $_POST['position'] ?? '';
-  $kurssi['visible'] = $_POST['visible'] ?? '';
-  $kurssi['content'] = $_POST['content'] ?? '';
+  $tehtava = [];
+  $tehtava['id'] = $id;
+  $tehtava['opettaja_id'] = $_POST['opettaja_id'] ?? '';
+  $tehtava['menu_name'] = $_POST['menu_name'] ?? '';
+  $tehtava['position'] = $_POST['position'] ?? '';
+  $tehtava['visible'] = $_POST['visible'] ?? '';
+  $tehtava['content'] = $_POST['content'] ?? '';
 
-  $result = update_kurssi($kurssi);
+  $result = update_tehtava($tehtava);
   if($result === true) {
-    $_SESSION['message'] = 'The kurssi was updated successfully.';
-    redirect_to(url_for('/staff/kurssit/show.php?id=' . $id));
+    $_SESSION['message'] = 'The tehtava was updated successfully.';
+    redirect_to(url_for('/staff/tehtavat/show.php?id=' . $id));
   } else {
     $errors = $result;
   }
 
 } else {
 
-  $kurssi = find_kurssi_by_id($id);
+  $tehtava = find_tehtava_by_id($id);
 
 }
 
-$kurssi_count = count_kurssit_by_opettaja_id($kurssi['opettaja_id']);
+$tehtava_count = count_tehtavat_by_opettaja_id($tehtava['opettaja_id']);
 
 ?>
 
-<?php $kurssi_title = 'Edit kurssi'; ?>
+<?php $tehtava_title = 'Edit tehtava'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($kurssi['opettaja_id']))); ?>">&laquo; Back to opettaja kurssi</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))); ?>">&laquo; Back to opettaja tehtava</a>
 
-  <div class="kurssi edit">
-    <h1>Edit kurssi</h1>
+  <div class="tehtava edit">
+    <h1>Edit tehtava</h1>
 
     <?php echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/staff/kurssit/edit.php?id=' . h(u($id))); ?>" method="post">
+    <form action="<?php echo url_for('/staff/tehtavat/edit.php?id=' . h(u($id))); ?>" method="post">
       <dl>
         <dt>opettaja</dt>
         <dd>
@@ -60,7 +60,7 @@ $kurssi_count = count_kurssit_by_opettaja_id($kurssi['opettaja_id']);
             $opettaja_set = find_all_opettajat();
             while($opettaja = mysqli_fetch_assoc($opettaja_set)) {
               echo "<option value=\"" . h($opettaja['id']) . "\"";
-              if($kurssi["opettaja_id"] == $opettaja['id']) {
+              if($tehtava["opettaja_id"] == $opettaja['id']) {
                 echo " selected";
               }
               echo ">" . h($opettaja['menu_name']) . "</option>";
@@ -72,16 +72,16 @@ $kurssi_count = count_kurssit_by_opettaja_id($kurssi['opettaja_id']);
       </dl>
       <dl>
         <dt>Menu Name</dt>
-        <dd><input type="text" name="menu_name" value="<?php echo h($kurssi['menu_name']); ?>" /></dd>
+        <dd><input type="text" name="menu_name" value="<?php echo h($tehtava['menu_name']); ?>" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>
         <dd>
           <select name="position">
             <?php
-              for($i=1; $i <= $kurssi_count; $i++) {
+              for($i=1; $i <= $tehtava_count; $i++) {
                 echo "<option value=\"{$i}\"";
-                if($kurssi["position"] == $i) {
+                if($tehtava["position"] == $i) {
                   echo " selected";
                 }
                 echo ">{$i}</option>";
@@ -94,17 +94,17 @@ $kurssi_count = count_kurssit_by_opettaja_id($kurssi['opettaja_id']);
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($kurssi['visible'] == "1") { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1"<?php if($tehtava['visible'] == "1") { echo " checked"; } ?> />
         </dd>
       </dl>
       <dl>
         <dt>Content</dt>
         <dd>
-          <textarea name="content" cols="60" rows="10"><?php echo h($kurssi['content']); ?></textarea>
+          <textarea name="content" cols="60" rows="10"><?php echo h($tehtava['content']); ?></textarea>
         </dd>
       </dl>
       <div id="operations">
-        <input type="submit" value="Edit kurssi" />
+        <input type="submit" value="Edit tehtava" />
       </div>
     </form>
 

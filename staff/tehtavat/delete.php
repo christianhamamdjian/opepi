@@ -5,37 +5,37 @@ require_once('../../private/initialize.php');
 require_login();
 
 if(!isset($_GET['id'])) {
-  redirect_to(url_for('/staff/kurssit/index.php'));
+  redirect_to(url_for('/staff/tehtavat/index.php'));
 }
 $id = $_GET['id'];
 
-$kurssi = find_kurssi_by_id($id);
+$tehtava = find_tehtava_by_id($id);
 
 if(is_post_request()) {
 
-  $result = delete_kurssi($id);
-  $_SESSION['message'] = 'The kurssi was deleted successfully.';
-  redirect_to(url_for('/staff/opettajat/show.php?id=' . h(u($kurssi['opettaja_id']))));
+  $result = delete_tehtava($id);
+  $_SESSION['message'] = 'The tehtava was deleted successfully.';
+  redirect_to(url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))));
 
 }
 
 ?>
 
-<?php $kurssi_title = 'Delete kurssi'; ?>
+<?php $tehtava_title = 'Delete tehtava'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($kurssi['opettaja_id']))); ?>">&laquo; Back to opettaja kurssi</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))); ?>">&laquo; Back to opettaja tehtava</a>
 
-  <div class="kurssi delete">
-    <h1>Delete kurssi</h1>
-    <p>Are you sure you want to delete this kurssi?</p>
-    <p class="item"><?php echo h($kurssi['menu_name']); ?></p>
+  <div class="tehtava delete">
+    <h1>Delete tehtava</h1>
+    <p>Are you sure you want to delete this tehtava?</p>
+    <p class="item"><?php echo h($tehtava['menu_name']); ?></p>
 
-    <form action="<?php echo url_for('/staff/kurssit/delete.php?id=' . h(u($kurssi['id']))); ?>" method="post">
+    <form action="<?php echo url_for('/staff/tehtavat/delete.php?id=' . h(u($tehtava['id']))); ?>" method="post">
       <div id="operations">
-        <input type="submit" name="commit" value="Delete kurssi" />
+        <input type="submit" name="commit" value="Delete tehtava" />
       </div>
     </form>
   </div>
