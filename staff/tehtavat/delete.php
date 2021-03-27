@@ -15,7 +15,7 @@ if(is_post_request()) {
 
   $result = delete_tehtava($id);
   $_SESSION['message'] = 'The tehtava was deleted successfully.';
-  redirect_to(url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))));
+  redirect_to(url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))));
 
 }
 
@@ -26,7 +26,7 @@ if(is_post_request()) {
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))); ?>">&laquo; Back to opettaja tehtava</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtava</a>
 
   <div class="tehtava delete">
     <h1>Delete tehtava</h1>
