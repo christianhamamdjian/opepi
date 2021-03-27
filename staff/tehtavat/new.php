@@ -7,7 +7,7 @@ require_login();
 if(is_post_request()) {
 
   $tehtava = [];
-  $tehtava['opettaja_id'] = $_POST['opettaja_id'] ?? '';
+  $tehtava['opiskelija_id'] = $_POST['opiskelija_id'] ?? '';
   $tehtava['menu_name'] = $_POST['menu_name'] ?? '';
   $tehtava['position'] = $_POST['position'] ?? '';
   $tehtava['visible'] = $_POST['visible'] ?? '';
@@ -25,7 +25,7 @@ if(is_post_request()) {
 } else {
 
   $tehtava = [];
-  $tehtava['opettaja_id'] = $_GET['opettaja_id'] ?? '1';
+  $tehtava['opiskelija_id'] = $_GET['opiskelija_id'] ?? '1';
   $tehtava['menu_name'] = '';
   $tehtava['position'] = '';
   $tehtava['visible'] = '';
@@ -33,7 +33,7 @@ if(is_post_request()) {
 
 }
 
-$tehtava_count = count_tehtavat_by_opettaja_id($tehtava['opettaja_id']) + 1;
+$tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']) + 1;
 
 ?>
 
@@ -42,7 +42,7 @@ $tehtava_count = count_tehtavat_by_opettaja_id($tehtava['opettaja_id']) + 1;
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($tehtava['opettaja_id']))); ?>">&laquo; Back to opettaja tehtava</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtava</a>
 
   <div class="tehtava new">
     <h1>Create tehtava</h1>
@@ -51,19 +51,19 @@ $tehtava_count = count_tehtavat_by_opettaja_id($tehtava['opettaja_id']) + 1;
 
     <form action="<?php echo url_for('/staff/tehtavat/new.php'); ?>" method="post">
       <dl>
-        <dt>opettaja</dt>
+        <dt>opiskelija</dt>
         <dd>
-          <select name="opettaja_id">
+          <select name="opiskelija_id">
           <?php
-            $opettaja_set = find_all_opettajat();
-            while($opettaja = mysqli_fetch_assoc($opettaja_set)) {
-              echo "<option value=\"" . h($opettaja['id']) . "\"";
-              if($tehtava["opettaja_id"] == $opettaja['id']) {
+            $opiskelija_set = find_all_opiskelijat();
+            while($opiskelija = mysqli_fetch_assoc($opiskelija_set)) {
+              echo "<option value=\"" . h($opiskelija['id']) . "\"";
+              if($tehtava["opiskelija_id"] == $opiskelija['id']) {
                 echo " selected";
               }
-              echo ">" . h($opettaja['menu_name']) . "</option>";
+              echo ">" . h($opiskelija['menu_name']) . "</option>";
             }
-            mysqli_free_result($opettaja_set);
+            mysqli_free_result($opiskelija_set);
           ?>
           </select>
         </dd>

@@ -11,8 +11,6 @@ $id = $_GET['id'];
 
 if(is_post_request()) {
 
-  // Handle form values sent by new.php
-
   $kurssi = [];
   $kurssi['id'] = $id;
   $kurssi['opettaja_id'] = $_POST['opettaja_id'] ?? '';
