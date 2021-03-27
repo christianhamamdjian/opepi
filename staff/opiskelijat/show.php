@@ -3,15 +3,14 @@
 <?php
 require_login();
 
-// $id = isset($_GET['id']) ? $_GET['id'] : '1';
-$id = $_GET['id'] ?? '1'; // PHP > 7.0
+$id = $_GET['id'] ?? '1';
 
 $opiskelija = find_opiskelija_by_id($id);
-$kurssi_set = find_kurssit_by_opiskelija_id($id);
+$tehtava_set = find_tehtavat_by_opiskelija_id($id);
 
 ?>
 
-<?php $kurssi_title = 'Show opiskelija'; ?>
+<?php $tehtava_title = 'Show opiskelija'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
@@ -39,11 +38,11 @@ $kurssi_set = find_kurssit_by_opiskelija_id($id);
 
     <hr />
 
-    <div class="kurssit listing">
-      <h2>kurssit</h2>
+    <div class="tehtavat listing">
+      <h2>Tehtävät</h2>
 
       <div class="actions">
-        <a class="action" href="<?php echo url_for('/staff/kurssit/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Create New kurssi</a>
+        <a class="action" href="<?php echo url_for('/staff/tehtavat/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Luo uusi tehtävä</a>
       </div>
 
       <table class="list">
@@ -57,21 +56,21 @@ $kurssi_set = find_kurssit_by_opiskelija_id($id);
           <th>&nbsp;</th>
         </tr>
 
-        <?php while($kurssi = mysqli_fetch_assoc($kurssi_set)) { ?>
-          <?php $opiskelija = find_opiskelija_by_id($kurssi['opiskelija_id']); ?>
+        <?php while($tehtava = mysqli_fetch_assoc($tehtava_set)) { ?>
+          <?php $opiskelija = find_opiskelija_by_id($tehtava['opiskelija_id']); ?>
           <tr>
-            <td><?php echo h($kurssi['id']); ?></td>
-            <td><?php echo h($kurssi['position']); ?></td>
-            <td><?php echo $kurssi['visible'] == 1 ? 'true' : 'false'; ?></td>
-            <td><?php echo h($kurssi['menu_name']); ?></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/show.php?id=' . h(u($kurssi['id']))); ?>">View</a></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/edit.php?id=' . h(u($kurssi['id']))); ?>">Edit</a></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/delete.php?id=' . h(u($kurssi['id']))); ?>">Delete</a></td>
+            <td><?php echo h($tehtava['id']); ?></td>
+            <td><?php echo h($tehtava['position']); ?></td>
+            <td><?php echo $tehtava['visible'] == 1 ? 'true' : 'false'; ?></td>
+            <td><?php echo h($tehtava['menu_name']); ?></td>
+            <td><a class="action" href="<?php echo url_for('/staff/tehtavat/show.php?id=' . h(u($tehtava['id']))); ?>">View</a></td>
+            <td><a class="action" href="<?php echo url_for('/staff/tehtavat/edit.php?id=' . h(u($tehtava['id']))); ?>">Edit</a></td>
+            <td><a class="action" href="<?php echo url_for('/staff/tehtavat/delete.php?id=' . h(u($tehtava['id']))); ?>">Delete</a></td>
           </tr>
         <?php } ?>
       </table>
 
-      <?php mysqli_free_result($kurssi_set); ?>
+      <?php mysqli_free_result($tehtava_set); ?>
 
     </div>
 

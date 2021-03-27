@@ -5,7 +5,6 @@
   require_login();
 
   $opettaja_set = find_all_opettajat();
-
 ?>
 
 <?php $kurssi_title = 'opettajat'; ?>

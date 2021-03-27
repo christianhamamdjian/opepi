@@ -3,8 +3,7 @@
 <?php
 require_login();
 
-// $id = isset($_GET['id']) ? $_GET['id'] : '1';
-$id = $_GET['id'] ?? '1'; // PHP > 7.0
+$id = $_GET['id'] ?? '1';
 
 $opettaja = find_opettaja_by_id($id);
 $kurssi_set = find_kurssit_by_opettaja_id($id);
@@ -40,10 +39,10 @@ $kurssi_set = find_kurssit_by_opettaja_id($id);
     <hr />
 
     <div class="kurssit listing">
-      <h2>kurssit</h2>
+      <h2>Kurssit</h2>
 
       <div class="actions">
-        <a class="action" href="<?php echo url_for('/staff/kurssit/new.php?opettaja_id=' . h(u($opettaja['id']))); ?>">Create New kurssi</a>
+        <a class="action" href="<?php echo url_for('/staff/kurssit/new.php?opettaja_id=' . h(u($opettaja['id']))); ?>">Luo uusi kurssi</a>
       </div>
 
       <table class="list">
