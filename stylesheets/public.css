@@ -153,6 +153,50 @@ section{
     transition-delay:0;
 } 
 
+
+#menu > ul > li {
+  /* display: inline-block; */
+  position: relative;
+  background-color: rgb(161, 161, 161);
+  padding: 12px;
+  list-style: none;
+}
+#menu > ul > li:hover {
+  background-color: rgb(255, 255, 255);
+}
+#menu > ul > li:hover > a {
+  color: rgb(0, 0, 0);
+}
+#menu > ul > li > .submenu {
+  position: absolute;
+  margin-top: 10px;
+  z-index: 1;
+  width: 200px;
+  white-space: nowrap;
+  display: none;
+  text-decoration: none;
+}
+#menu > ul > li:hover > .submenu {
+  display: block;
+  padding: 0px;
+  color: rgb(0, 0, 0);
+  background-color: rgb(110, 110, 110);
+}
+.submenu > li {
+  list-style: none;
+  padding: 12px;
+}
+.submenu > li:hover {
+  background-color: rgb(107, 107, 107);
+  color: rgb(0, 0, 0);
+}
+.submenu > li:hover > a {
+  color: rgb(0, 0, 0);
+}
+
+
+
+
 #hero{
   background: url("../images/homepage_assets/background.jpg") center center/cover no-repeat;
   height: 100vh;
@@ -458,6 +502,47 @@ a.learnmore:hover {
       transition: 0s;
       font-size: 1rem;
     } 
+
+    #menu > ul > li {
+      display: inline-block;
+      position: relative;
+      background-color: rgb(126, 126, 126);
+      padding: 12px;
+      list-style: none;
+    }
+    #menu > ul > li:hover {
+      background-color: rgb(155, 155, 155);
+    }
+    #menu > ul > li:hover > a {
+      color: rgb(0, 0, 0);
+    }
+    .submenu {
+      position: absolute;
+      margin-top: 10px;
+      z-index: 1;
+      width: 200px;
+      white-space: nowrap;
+      display: none;
+      text-decoration: none;
+    }
+    li:hover > .submenu {
+      display: block;
+      padding: 0px;
+      color: rgb(0, 0, 0);
+      background-color: rgb(116, 116, 116);
+    }
+    .submenu > li {
+      list-style: none;
+      padding: 12px;
+    }
+    .submenu > li:hover {
+      background-color: rgb(59, 59, 59);
+      color: rgb(0, 0, 0);
+    }
+    .submenu > li:hover > a {
+      color: rgb(0, 0, 0);
+    }
+  
 
 }
 
