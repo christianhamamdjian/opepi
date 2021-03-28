@@ -16,7 +16,7 @@ if(is_post_request()) {
   $result = insert_tehtava($tehtava);
   if($result === true) {
     $new_id = mysqli_insert_id($db);
-    $_SESSION['message'] = 'The tehtava was created successfully.';
+    $_SESSION['message'] = 'The tehtävä was created successfully.';
     redirect_to(url_for('/staff/tehtavat/show.php?id=' . $new_id));
   } else {
     $errors = $result;
@@ -37,20 +37,21 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']) + 1;
 
 ?>
 
-<?php $tehtava_title = 'Create tehtava'; ?>
+<?php $tehtava_title = 'Create tehtävä'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtava</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtävä</a>
 
   <div class="tehtava new">
-    <h1>Create tehtava</h1>
+    <h1>Create tehtävä</h1>
 
     <?php echo display_errors($errors); ?>
-
-    <form action="<?php echo url_for('/staff/tehtavat/new.php'); ?>" method="post">
-      <dl>
+    
+    <!-- <form action="<?php // echo url_for('/staff/tehtavat/new.php'); ?>" method="post"> -->
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <dl>
         <dt>opiskelija</dt>
         <dd>
           <select name="opiskelija_id">
@@ -102,7 +103,7 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']) + 1;
         </dd>
       </dl>
       <div id="operations">
-        <input type="submit" value="Create tehtava" />
+        <input type="submit" value="Create tehtävä" />
       </div>
     </form>
 

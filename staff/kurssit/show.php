@@ -4,8 +4,7 @@
 
 require_login();
 
-// $id = isset($_GET['id']) ? $_GET['id'] : '1';
-$id = $_GET['id'] ?? '1'; // PHP > 7.0
+$id = $_GET['id'] ?? '1';
 
 $kurssi = find_kurssi_by_id($id);
 $opettaja = find_opettaja_by_id($kurssi['opettaja_id']);

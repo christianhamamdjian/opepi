@@ -540,6 +540,7 @@
   }
 
 
+  
   function find_all_tehtavat() {
     global $db;
     $sql = "SELECT * FROM tehtavat ";
@@ -565,6 +566,8 @@
   }
 
   function validate_tehtava($tehtava) {
+    print_r($tehtava);
+
     $errors = [];
     if(is_blank($tehtava['opiskelija_id'])) {
       $errors[] = "opiskelija cannot be blank.";
@@ -574,10 +577,10 @@
     } elseif(!has_length($tehtava['menu_name'], ['min' => 2, 'max' => 255])) {
       $errors[] = "Name must be between 2 and 255 characters.";
     }
-    $current_id = $tehtava['id'] ?? '0';
-    if(!has_unique_tehtava_menu_name($tehtava['menu_name'], $current_id)) {
-      $errors[] = "Menu name must be unique.";
-    }
+    // $current_id = $tehtava['id'] ?? '0';
+    // if(!has_unique_tehtava_menu_name($tehtava['menu_name'], $current_id)) {
+    //   $errors[] = "Menu name must be unique.";
+    // }
 
 
     $postion_int = (int) $tehtava['position'];
@@ -593,7 +596,6 @@
       $errors[] = "Visible must be true or false.";
     }
 
-    // content
     if(is_blank($tehtava['content'])) {
       $errors[] = "Content cannot be blank.";
     }
@@ -602,6 +604,7 @@
   }
 
   function insert_tehtava($tehtava) {
+
     global $db;
 
     $errors = validate_tehtava($tehtava);
@@ -751,7 +754,7 @@
       exit;
     }
   }
-
+  
 
 
 
