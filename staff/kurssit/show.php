@@ -23,7 +23,7 @@ $opettaja = find_opettaja_by_id($kurssi['opettaja_id']);
     <h1>kurssi: <?php echo h($kurssi['menu_name']); ?></h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/index.php?id=' . h(u($kurssi['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
+      <a class="action" href="<?php echo url_for('/index.php?kurssi_id=' . h(u($kurssi['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
     </div>
 
     <div class="attributes">

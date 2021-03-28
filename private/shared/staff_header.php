@@ -1,5 +1,5 @@
 <?php
-  if(!isset($kurssi_title)) { $kurssi_title = 'Staff Area'; }
+  if(!isset($kurssi_title)) { $kurssi_title = 'Private Area'; }
 ?>
 
 <!doctype html>
@@ -13,14 +13,14 @@
 
   <body>
     <header>
-      <h1>OPEPI Staff Area</h1>
+      <h1>OPEPI yksityisalue</h1>
     </header>
-
+      <?php // include("staff_navigation.php"); ?>
+      <div class="moi">Moi <?php echo $_SESSION['username'] ?? ''; ?> !</div>
     <navigation>
       <ul>
-        <li>User: <?php echo $_SESSION['username'] ?? ''; ?></li>
-        <li><a href="<?php echo url_for('/staff/index.php'); ?>">Menu</a></li>
-        <li><a href="<?php echo url_for('/staff/logout.php'); ?>">Logout</a></li>
+        <li><a href="<?php echo url_for('/staff/index.php'); ?>">Pääsivu</a></li>
+        <li><a href="<?php echo url_for('/staff/logout.php'); ?>">Kirjaudu ulos</a></li>
       </ul>
     </navigation>
 
