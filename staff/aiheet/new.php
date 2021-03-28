@@ -4,61 +4,61 @@ require_once('../../private/initialize.php');
 
 require_login();
 
-$opettaja_set = find_all_opettajat();
-$opettaja_count = mysqli_num_rows($opettaja_set) + 1;
-mysqli_free_result($opettaja_set);
+$aihe_set = find_all_aiheet();
+$aihe_count = mysqli_num_rows($aihe_set) + 1;
+mysqli_free_result($aihe_set);
 
 if(is_post_request()) {
 
-  $opettaja = [];
-  $opettaja['menu_name'] = $_POST['menu_name'] ?? '';
-  $opettaja['position'] = $_POST['position'] ?? '';
-  $opettaja['visible'] = $_POST['visible'] ?? '';
+  $aihe = [];
+  $aihe['menu_name'] = $_POST['menu_name'] ?? '';
+  $aihe['position'] = $_POST['position'] ?? '';
+  $aihe['visible'] = $_POST['visible'] ?? '';
 
-  $result = insert_opettaja($opettaja);
+  $result = insert_aihe($aihe);
   if($result === true) {
     $new_id = mysqli_insert_id($db);
-    $_SESSION['message'] = 'The opettaja was created successfully.';
-    redirect_to(url_for('/staff/opettajat/show.php?id=' . $new_id));
+    $_SESSION['message'] = 'The aihe was created successfully.';
+    redirect_to(url_for('/staff/aiheet/show.php?id=' . $new_id));
   } else {
     $errors = $result;
   }
 
 } else {
   // display the blank form
-  $opettaja = [];
-  $opettaja["menu_name"] = '';
-  $opettaja["position"] = $opettaja_count;
-  $opettaja["visible"] = '';
+  $aihe = [];
+  $aihe["menu_name"] = '';
+  $aihe["position"] = $aihe_count;
+  $aihe["visible"] = '';
 }
 
 ?>
 
-<?php $page_title = 'Create opettaja'; ?>
+<?php $page_title = 'Create aihe'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/aiheet/index.php'); ?>">&laquo; Back to List</a>
 
-  <div class="opettaja new">
-    <h1>Create opettaja</h1>
+  <div class="aihe new">
+    <h1>Create aihe</h1>
 
     <?php echo display_errors($errors); ?>
 
-    <form action="<?php echo url_for('/staff/opettajat/new.php'); ?>" method="post">
+    <form action="<?php echo url_for('/staff/aiheet/new.php'); ?>" method="post">
       <dl>
         <dt>Menu Name</dt>
-        <dd><input type="text" name="menu_name" value="<?php echo h($opettaja['menu_name']); ?>" /></dd>
+        <dd><input type="text" name="menu_name" value="<?php echo h($aihe['menu_name']); ?>" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>
         <dd>
           <select name="position">
           <?php
-            for($i=1; $i <= $opettaja_count; $i++) {
+            for($i=1; $i <= $aihe_count; $i++) {
               echo "<option value=\"{$i}\"";
-              if($opettaja["position"] == $i) {
+              if($aihe["position"] == $i) {
                 echo " selected";
               }
               echo ">{$i}</option>";
@@ -71,11 +71,11 @@ if(is_post_request()) {
         <dt>Visible</dt>
         <dd>
           <input type="hidden" name="visible" value="0" />
-          <input type="checkbox" name="visible" value="1"<?php if($opettaja['visible'] == 1) { echo " checked"; } ?> />
+          <input type="checkbox" name="visible" value="1"<?php if($aihe['visible'] == 1) { echo " checked"; } ?> />
         </dd>
       </dl>
       <div id="operations">
-        <input type="submit" value="Create opettaja" />
+        <input type="submit" value="Create aihe" />
       </div>
     </form>
 

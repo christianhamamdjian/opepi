@@ -5,44 +5,44 @@ require_login();
 
 $id = $_GET['id'] ?? '1';
 
-$opettaja = find_opettaja_by_id($id);
-$kurssi_set = find_kurssit_by_opettaja_id($id);
+$aihe = find_aihe_by_id($id);
+$sivu_set = find_sivut_by_aihe_id($id);
 
 ?>
 
-<?php $kurssi_title = 'Show opettaja'; ?>
+<?php $sivu_title = 'Show aihe'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/aiheet/index.php'); ?>">&laquo; Back to List</a>
 
-  <div class="opettaja show">
+  <div class="aihe show">
 
-    <h1>opettaja: <?php echo h($opettaja['menu_name']); ?></h1>
+    <h1>aihe: <?php echo h($aihe['menu_name']); ?></h1>
 
     <div class="attributes">
       <dl>
         <dt>Menu Name</dt>
-        <dd><?php echo h($opettaja['menu_name']); ?></dd>
+        <dd><?php echo h($aihe['menu_name']); ?></dd>
       </dl>
       <dl>
         <dt>Position</dt>
-        <dd><?php echo h($opettaja['position']); ?></dd>
+        <dd><?php echo h($aihe['position']); ?></dd>
       </dl>
       <dl>
         <dt>Visible</dt>
-        <dd><?php echo $opettaja['visible'] == '1' ? 'true' : 'false'; ?></dd>
+        <dd><?php echo $aihe['visible'] == '1' ? 'true' : 'false'; ?></dd>
       </dl>
     </div>
 
     <hr />
 
-    <div class="kurssit listing">
-      <h2>Kurssit</h2>
+    <div class="sivut listing">
+      <h2>sivut</h2>
 
       <div class="actions">
-        <a class="action" href="<?php echo url_for('/staff/kurssit/new.php?opettaja_id=' . h(u($opettaja['id']))); ?>">Luo uusi kurssi</a>
+        <a class="action" href="<?php echo url_for('/staff/sivut/new.php?aihe_id=' . h(u($aihe['id']))); ?>">Luo uusi sivu</a>
       </div>
 
       <table class="list">
@@ -56,21 +56,21 @@ $kurssi_set = find_kurssit_by_opettaja_id($id);
           <th>&nbsp;</th>
         </tr>
 
-        <?php while($kurssi = mysqli_fetch_assoc($kurssi_set)) { ?>
-          <?php $opettaja = find_opettaja_by_id($kurssi['opettaja_id']); ?>
+        <?php while($sivu = mysqli_fetch_assoc($sivu_set)) { ?>
+          <?php $aihe = find_aihe_by_id($sivu['aihe_id']); ?>
           <tr>
-            <td><?php echo h($kurssi['id']); ?></td>
-            <td><?php echo h($kurssi['position']); ?></td>
-            <td><?php echo $kurssi['visible'] == 1 ? 'true' : 'false'; ?></td>
-            <td><?php echo h($kurssi['menu_name']); ?></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/show.php?id=' . h(u($kurssi['id']))); ?>">View</a></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/edit.php?id=' . h(u($kurssi['id']))); ?>">Edit</a></td>
-            <td><a class="action" href="<?php echo url_for('/staff/kurssit/delete.php?id=' . h(u($kurssi['id']))); ?>">Delete</a></td>
+            <td><?php echo h($sivu['id']); ?></td>
+            <td><?php echo h($sivu['position']); ?></td>
+            <td><?php echo $sivu['visible'] == 1 ? 'true' : 'false'; ?></td>
+            <td><?php echo h($sivu['menu_name']); ?></td>
+            <td><a class="action" href="<?php echo url_for('/staff/sivut/show.php?id=' . h(u($sivu['id']))); ?>">View</a></td>
+            <td><a class="action" href="<?php echo url_for('/staff/sivut/edit.php?id=' . h(u($sivu['id']))); ?>">Edit</a></td>
+            <td><a class="action" href="<?php echo url_for('/staff/sivut/delete.php?id=' . h(u($sivu['id']))); ?>">Delete</a></td>
           </tr>
         <?php } ?>
       </table>
 
-      <?php mysqli_free_result($kurssi_set); ?>
+      <?php mysqli_free_result($sivu_set); ?>
 
     </div>
 
