@@ -11,8 +11,6 @@ $id = $_GET['id'];
 
 if(is_post_request()) {
 
-  // Handle form values sent by new.php
-
   $opiskelija = [];
   $opiskelija['id'] = $id;
   $opiskelija['menu_name'] = $_POST['menu_name'] ?? '';

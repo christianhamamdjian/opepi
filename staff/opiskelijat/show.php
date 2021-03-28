@@ -39,10 +39,10 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
     <hr />
 
     <div class="tehtavat listing">
-      <h2>Tehtävät</h2>
+      <h2>tehtavat</h2>
 
       <div class="actions">
-        <a class="action" href="<?php echo url_for('/staff/tehtavat/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Luo uusi tehtävä</a>
+        <a class="action" href="<?php echo url_for('/staff/tehtavat/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Luo uusi tehtava</a>
       </div>
 
       <table class="list">

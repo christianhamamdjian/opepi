@@ -11,12 +11,12 @@ $id = $_GET['id'];
 
 if(is_post_request()) {
 
-  $result = delete_opettaja($id);
+  $result = delete_opiskelija($id);
   $_SESSION['message'] = 'The opiskelija was deleted successfully.';
   redirect_to(url_for('/staff/opiskelijat/index.php'));
 
 } else {
-  $opiskelija = find_opettaja_by_id($id);
+  $opiskelija = find_opiskelija_by_id($id);
 }
 
 ?>
