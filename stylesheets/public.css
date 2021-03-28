@@ -172,7 +172,7 @@ section{
   position: absolute;
   margin-top: 10px;
   z-index: 1;
-  width: 200px;
+  width: 50%;
   white-space: nowrap;
   display: none;
   text-decoration: none;
@@ -371,7 +371,7 @@ table tfoot {
 
 #kurssi {
   width: 70%;
-  margin-top:90px;
+  margin-top:120px;
   height: 100%;
   padding: 0px;
   vertical-align: top;
