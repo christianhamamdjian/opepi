@@ -4,18 +4,18 @@
 
   require_login();
 
-  $opettaja_set = find_all_opettajat();
+  $aihe_set = find_all_aiheet();
 ?>
 
-<?php $kurssi_title = 'opettajat'; ?>
+<?php $sivu_title = 'aiheet'; ?>
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
-  <div class="opettajat listing">
-    <h1>opettajat</h1>
+  <div class="aiheet listing">
+    <h1>aiheet</h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/staff/opettajat/new.php'); ?>">Create New opettaja</a>
+      <a class="action" href="<?php echo url_for('/staff/aiheet/new.php'); ?>">Create New aihe</a>
     </div>
 
   	<table class="list">
@@ -24,29 +24,29 @@
         <th>Position</th>
         <th>Visible</th>
   	    <th>Name</th>
-        <th>kurssit</th>
+        <th>sivut</th>
   	    <th>&nbsp;</th>
   	    <th>&nbsp;</th>
         <th>&nbsp;</th>
   	  </tr>
 
-      <?php while($opettaja = mysqli_fetch_assoc($opettaja_set)) { ?>
-        <?php $kurssi_count = count_kurssit_by_opettaja_id($opettaja['id']); ?>
+      <?php while($aihe = mysqli_fetch_assoc($aihe_set)) { ?>
+        <?php $sivu_count = count_sivut_by_aihe_id($aihe['id']); ?>
         <tr>
-          <td><?php echo h($opettaja['id']); ?></td>
-          <td><?php echo h($opettaja['position']); ?></td>
-          <td><?php echo $opettaja['visible'] == 1 ? 'true' : 'false'; ?></td>
-    	    <td><?php echo h($opettaja['menu_name']); ?></td>
-          <td><?php echo $kurssi_count; ?></td>
-          <td><a class="action" href="<?php echo url_for('/staff/opettajat/show.php?id=' . h(u($opettaja['id']))); ?>">View</a></td>
-          <td><a class="action" href="<?php echo url_for('/staff/opettajat/edit.php?id=' . h(u($opettaja['id']))); ?>">Edit</a></td>
-          <td><a class="action" href="<?php echo url_for('/staff/opettajat/delete.php?id=' . h(u($opettaja['id']))); ?>">Delete</a></td>
+          <td><?php echo h($aihe['id']); ?></td>
+          <td><?php echo h($aihe['position']); ?></td>
+          <td><?php echo $aihe['visible'] == 1 ? 'true' : 'false'; ?></td>
+    	    <td><?php echo h($aihe['menu_name']); ?></td>
+          <td><?php echo $sivu_count; ?></td>
+          <td><a class="action" href="<?php echo url_for('/staff/aiheet/show.php?id=' . h(u($aihe['id']))); ?>">View</a></td>
+          <td><a class="action" href="<?php echo url_for('/staff/aiheet/edit.php?id=' . h(u($aihe['id']))); ?>">Edit</a></td>
+          <td><a class="action" href="<?php echo url_for('/staff/aiheet/delete.php?id=' . h(u($aihe['id']))); ?>">Delete</a></td>
     	  </tr>
       <?php } ?>
   	</table>
 
     <?php
-      mysqli_free_result($opettaja_set);
+      mysqli_free_result($aihe_set);
     ?>
   </div>
 
