@@ -23,7 +23,7 @@ $opiskelija = find_opiskelija_by_id($tehtava['opiskelija_id']);
     <h1>tehtava: <?php echo h($tehtava['menu_name']); ?></h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/index.php?id=' . h(u($tehtava['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
+      <a class="action" href="<?php echo url_for('/index.php?tehtava_id=' . h(u($tehtava['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
     </div>
 
     <div class="attributes">

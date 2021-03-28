@@ -1,14 +1,14 @@
 <?php
-$sivu = $_SERVER['PHP_SELF'];
-$loppuosa = substr($sivu,strrpos($sivu,"/") + 1);
-$osoite = substr($loppuosa,0,strpos($loppuosa,"."));
-$valittu="class=\"valittu\" ";
+// $currentsivu = $_SERVER['PHP_SELF'];
+// $loppuosa = substr($currentsivu,strrpos($currentsivu,"/") + 1);
+// $osoite = substr($loppuosa,0,strpos($loppuosa,"."));
+// $valittu="class=\"valittu\" ";
 ?>
 
 <?php
-  // Default values to prevent errors
-  $kurssi_id = $kurssi_id ?? '';
-  $opettaja_id = $opettaja_id ?? '';
+  //Default values to prevent errors
+  $sivu_id = $sivu_id ?? '';
+  $aihe_id = $aihe_id ?? '';
   $visible = $visible ?? true;
 ?>
 
@@ -25,59 +25,35 @@ $valittu="class=\"valittu\" ";
             <nav id="menu">
                 <a id="close" href="#"></a>
 
-                <?php $nav_opettajat = find_all_opettajat(['visible' => $visible]); ?>
+                <?php $nav_aiheet = find_all_aiheet(['visible' => $visible]); ?>
                 <ul class="menu">
-                    <?php while($nav_opettaja = mysqli_fetch_assoc($nav_opettajat)) { ?>
+                    <?php while($nav_aihe = mysqli_fetch_assoc($nav_aiheet)) { ?>
                     <li class="<?php  echo 'selected';  ?>">
-                        <a href="<?php echo url_for('index.php?opettaja_id=' . h(u($nav_opettaja['id']))); ?>">
-                            <?php echo h($nav_opettaja['menu_name']); ?>
+                        <a href="<?php echo url_for('index.php?aihe_id=' . h(u($nav_aihe['id']))); ?>">
+                            <?php echo h($nav_aihe['menu_name']); ?>
                         </a>
 
-                        <?php //if($nav_opettaja['id'] == $opettaja_id) { ?>
-                        <?php $nav_kurssit = find_kurssit_by_opettaja_id($nav_opettaja['id'], ['visible' => $visible]); ?>
-                        <!-- <ul class="kurssit submenu"> -->
+                        <?php //if($nav_aihe['id'] == $aihe_id) { ?>
+                        <?php $nav_sivut = find_sivut_by_aihe_id($nav_aihe['id'], ['visible' => $visible]); ?>
+                        <!-- <ul class="sivut submenu"> -->
                         <ul class="submenu">
-                            <?php while($nav_kurssi = mysqli_fetch_assoc($nav_kurssit)) { ?>
-                            <li class="<?php if($nav_kurssi['id'] == $kurssi_id) { echo 'selected'; } ?>">
-                                <a href="<?php echo url_for('index.php?id=' . h(u($nav_kurssi['id']))); ?>">
-                                    <?php echo h($nav_kurssi['menu_name']); ?>
+                            <?php while($nav_sivu = mysqli_fetch_assoc($nav_sivut)) { ?>
+                            <li class="<?php if($nav_sivu['id'] == $sivu_id) { echo 'selected'; } ?>">
+                                <a href="<?php echo url_for('index.php?sivu_id=' . h(u($nav_sivu['id']))); ?>">
+                                    <?php echo h($nav_sivu['menu_name']); ?>
                                 </a>
                             </li>
                             <?php } ?>
                         </ul>
-                        <?php mysqli_free_result($nav_kurssit); ?>
+                        <?php mysqli_free_result($nav_sivut); ?>
                         <?php // } ?>
 
                     </li>
                     <?php } ?>
                 </ul>
-                <?php mysqli_free_result($nav_opettajat); ?>
+                <?php mysqli_free_result($nav_aiheet); ?>
             </nav>
 
-
-
-            <!-- <nav class="header">
-                <input class="menu-btn" type="checkbox" id="menu-btn" />
-                <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
-                <ul class="menu">
-                    <li><a href="index.html">Etusivu</a></li>
-                    <li><a href="tuotteet.html">Tuotteet</a>
-                        <ul class="submenu">
-                            <li><a href="tyokalut.html">Työkalut</a></li>
-                            <li><a href="kasvien_hoito.html">Kasvien hoito</a></li>
-                            <li><a href="sisakasvit.html">Sisäkasvit</a></li>
-                            <li><a href="ulkokasvit.html">Ulkokasvit</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="myymalat.html">Myymälät</a></li>
-                    <li>
-                        <a href="tietoa_meista.html">Tietoa meistä</a>
-                    </li>
-                    <li><a href="ota_yhteytta.html">Ota yheteyttä</a></li>
-                </ul>
-            </nav>
-
- -->
 
         </div>
     </div>
