@@ -11,6 +11,7 @@
     <ul>
       <li><a href="<?php echo url_for('/staff/opettajat/index.php'); ?>">Opettajat</a></li>
       <li><a href="<?php echo url_for('/staff/opiskelijat/index.php'); ?>">Opiskelijat</a></li>
+      <li><a href="<?php echo url_for('/staff/aiheet/index.php'); ?>">Aiheet</a></li>
       <li><a href="<?php echo url_for('/staff/admins/index.php'); ?>">Admins</a></li>
     </ul>
   </div>
