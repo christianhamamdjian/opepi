@@ -163,6 +163,170 @@
   }
 
 
+function find_all_aiheet($options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM aiheet ";
+    if($visible) {
+      $sql .= "WHERE visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function find_aihe_by_id($id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM aiheet ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true";
+    }
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $aihe = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $aihe; 
+  }
+
+  function validate_aihe($aihe) {
+    $errors = [];
+
+    if(is_blank($aihe['menu_name'])) {
+      $errors[] = "Name cannot be blank.";
+    } elseif(!has_length($aihe['menu_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Name must be between 2 and 255 characters.";
+    }
+
+    $postion_int = (int) $aihe['position'];
+    if($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+    }
+    if($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+    }
+
+    $visible_str = (string) $aihe['visible'];
+    if(!has_inclusion_of($visible_str, ["0","1"])) {
+      $errors[] = "Visible must be true or false.";
+    }
+
+    return $errors;
+  }
+
+  function insert_aihe($aihe) {
+    global $db;
+
+    $errors = validate_aihe($aihe);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    shift_aihe_positions(0, $aihe['position']);
+    $sql = "INSERT INTO aiheet ";
+    $sql .= "(menu_name, position, visible) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $aihe['menu_name']) . "',";
+    $sql .= "'" . db_escape($db, $aihe['position']) . "',";
+    $sql .= "'" . db_escape($db, $aihe['visible']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function update_aihe($aihe) {
+    global $db;
+    $errors = validate_aihe($aihe);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    $old_aihe = find_aihe_by_id($aihe['id']);
+    $old_position = $old_aihe['position'];
+    shift_aihe_positions($old_position, $aihe['position'], $aihe['id']);
+    $sql = "UPDATE aiheet SET ";
+    $sql .= "menu_name='" . db_escape($db, $aihe['menu_name']) . "', ";
+    $sql .= "position='" . db_escape($db, $aihe['position']) . "', ";
+    $sql .= "visible='" . db_escape($db, $aihe['visible']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $aihe['id']) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+
+  }
+
+  function delete_aihe($id) {
+    global $db;
+    $old_aihe = find_aihe_by_id($id);
+    $old_position = $old_aihe['position'];
+    shift_aihe_positions($old_position, 0, $id);
+    $sql = "DELETE FROM aiheet ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function shift_aihe_positions($start_pos, $end_pos, $current_id=0) {
+    global $db;
+
+    if($start_pos == $end_pos) { return; }
+
+    $sql = "UPDATE aiheet ";
+    if($start_pos == 0) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($end_pos == 0) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+    } elseif($start_pos < $end_pos) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+      $sql .= "AND position <= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($start_pos > $end_pos) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+      $sql .= "AND position < '" . db_escape($db, $start_pos) . "' ";
+    }
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "' ";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+
+
   function find_all_opiskelijat($options=[]) {
     global $db;
 
@@ -327,6 +491,220 @@
 
 
 
+
+  function find_all_sivut() {
+    global $db;
+    $sql = "SELECT * FROM sivut ";
+    $sql .= "ORDER BY aihe_id ASC, position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function find_sivu_by_id($id, $options=[]) {
+    global $db;
+    $visible = $options['visible'] ?? false;
+    $sql = "SELECT * FROM sivut ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true";
+    }
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $sivu = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $sivu; 
+  }
+
+  function validate_sivu($sivu) {
+    $errors = [];
+    if(is_blank($sivu['aihe_id'])) {
+      $errors[] = "aihe cannot be blank.";
+    }
+    if(is_blank($sivu['menu_name'])) {
+      $errors[] = "Name cannot be blank.";
+    } elseif(!has_length($sivu['menu_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Name must be between 2 and 255 characters.";
+    }
+    // $current_id = $sivu['id'] ?? '0';
+    // if(!has_unique_sivu_menu_name($sivu['menu_name'], $current_id)) {
+    //   $errors[] = "Menu name must be unique.";
+    // }
+
+
+    $postion_int = (int) $sivu['position'];
+    if($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+    }
+    if($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+    }
+
+    $visible_str = (string) $sivu['visible'];
+    if(!has_inclusion_of($visible_str, ["0","1"])) {
+      $errors[] = "Visible must be true or false.";
+    }
+
+    if(is_blank($sivu['content'])) {
+      $errors[] = "Content cannot be blank.";
+    }
+
+    return $errors;
+  }
+
+  function insert_sivu($sivu) {
+    global $db;
+
+    $errors = validate_sivu($sivu);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    shift_sivu_positions(0, $sivu['position'], $sivu['aihe_id']);
+
+    $sql = "INSERT INTO sivut ";
+    $sql .= "(aihe_id, menu_name, position, visible, content) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . db_escape($db, $sivu['aihe_id']) . "',";
+    $sql .= "'" . db_escape($db, $sivu['menu_name']) . "',";
+    $sql .= "'" . db_escape($db, $sivu['position']) . "',";
+    $sql .= "'" . db_escape($db, $sivu['visible']) . "',";
+    $sql .= "'" . db_escape($db, $sivu['content']) . "'";
+    $sql .= ")";
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function update_sivu($sivu) {
+    global $db;
+
+    $errors = validate_sivu($sivu);
+    if(!empty($errors)) {
+      return $errors;
+    }
+
+    $old_sivu = find_sivu_by_id($sivu['id']);
+    $old_position = $old_sivu['position'];
+    shift_sivu_positions($old_position, $sivu['position'], $sivu['aihe_id'], $sivu['id']);
+
+    $sql = "UPDATE sivut SET ";
+    $sql .= "aihe_id='" . db_escape($db, $sivu['aihe_id']) . "', ";
+    $sql .= "menu_name='" . db_escape($db, $sivu['menu_name']) . "', ";
+    $sql .= "position='" . db_escape($db, $sivu['position']) . "', ";
+    $sql .= "visible='" . db_escape($db, $sivu['visible']) . "', ";
+    $sql .= "content='" . db_escape($db, $sivu['content']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db, $sivu['id']) . "' ";
+    $sql .= "LIMIT 1";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+
+  }
+
+  function delete_sivu($id) {
+    global $db;
+
+    $old_sivu = find_sivu_by_id($id);
+    $old_position = $old_sivu['position'];
+    shift_sivu_positions($old_position, 0, $old_sivu['aihe_id'], $id);
+
+    $sql = "DELETE FROM sivut ";
+    $sql .= "WHERE id='" . db_escape($db, $id) . "' ";
+    $sql .= "LIMIT 1";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+  function find_sivut_by_aihe_id($aihe_id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT * FROM sivut ";
+    $sql .= "WHERE aihe_id='" . db_escape($db, $aihe_id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    return $result;
+  }
+
+  function count_sivut_by_aihe_id($aihe_id, $options=[]) {
+    global $db;
+
+    $visible = $options['visible'] ?? false;
+
+    $sql = "SELECT COUNT(id) FROM sivut ";
+    $sql .= "WHERE aihe_id='" . db_escape($db, $aihe_id) . "' ";
+    if($visible) {
+      $sql .= "AND visible = true ";
+    }
+    $sql .= "ORDER BY position ASC";
+    $result = mysqli_query($db, $sql);
+    confirm_result_set($result);
+    $row = mysqli_fetch_row($result);
+    mysqli_free_result($result);
+    $count = $row[0];
+    return $count;
+  }
+
+  function shift_sivu_positions($start_pos, $end_pos, $aihe_id, $current_id=0) {
+    global $db;
+
+    if($start_pos == $end_pos) { return; }
+
+    $sql = "UPDATE sivut ";
+    if($start_pos == 0) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($end_pos == 0) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+    } elseif($start_pos < $end_pos) {
+      $sql .= "SET position = position - 1 ";
+      $sql .= "WHERE position > '" . db_escape($db, $start_pos) . "' ";
+      $sql .= "AND position <= '" . db_escape($db, $end_pos) . "' ";
+    } elseif($start_pos > $end_pos) {
+      $sql .= "SET position = position + 1 ";
+      $sql .= "WHERE position >= '" . db_escape($db, $end_pos) . "' ";
+      $sql .= "AND position < '" . db_escape($db, $start_pos) . "' ";
+    }
+    $sql .= "AND id != '" . db_escape($db, $current_id) . "' ";
+    $sql .= "AND aihe_id = '" . db_escape($db, $aihe_id) . "'";
+
+    $result = mysqli_query($db, $sql);
+    if($result) {
+      return true;
+    } else {
+      echo mysqli_error($db);
+      db_disconnect($db);
+      exit;
+    }
+  }
+
+
+
   function find_all_kurssit() {
     global $db;
     $sql = "SELECT * FROM kurssit ";
@@ -380,7 +758,6 @@
       $errors[] = "Visible must be true or false.";
     }
 
-    // content
     if(is_blank($kurssi['content'])) {
       $errors[] = "Content cannot be blank.";
     }
