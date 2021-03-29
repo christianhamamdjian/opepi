@@ -67,11 +67,12 @@
 
     shift_opettaja_positions(0, $opettaja['position']);
     $sql = "INSERT INTO opettajat ";
-    $sql .= "(menu_name, position, visible) ";
+    $sql .= "(menu_name, position, visible, koodi) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $opettaja['menu_name']) . "',";
     $sql .= "'" . db_escape($db, $opettaja['position']) . "',";
-    $sql .= "'" . db_escape($db, $opettaja['visible']) . "'";
+    $sql .= "'" . db_escape($db, $opettaja['visible']) . "',";
+    $sql .= "'" . db_escape($db, $opettaja['koodi']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
 
@@ -97,7 +98,8 @@
     $sql = "UPDATE opettajat SET ";
     $sql .= "menu_name='" . db_escape($db, $opettaja['menu_name']) . "', ";
     $sql .= "position='" . db_escape($db, $opettaja['position']) . "', ";
-    $sql .= "visible='" . db_escape($db, $opettaja['visible']) . "' ";
+    $sql .= "visible='" . db_escape($db, $opettaja['visible']) . "', ";
+    $sql .= "koodi='" . db_escape($db, $opettaja['koodi']) . "' ";
     $sql .= "WHERE id='" . db_escape($db, $opettaja['id']) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
@@ -394,11 +396,13 @@ function find_all_aiheet($options=[]) {
 
     shift_opiskelija_positions(0, $opiskelija['position']);
     $sql = "INSERT INTO opiskelijat ";
-    $sql .= "(menu_name, position, visible) ";
+    $sql .= "(menu_name, kurssi, position, visible, koodi) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $opiskelija['menu_name']) . "',";
+    $sql .= "'" . db_escape($db, $opiskelija['kurssi']) . "',";
     $sql .= "'" . db_escape($db, $opiskelija['position']) . "',";
-    $sql .= "'" . db_escape($db, $opiskelija['visible']) . "'";
+    $sql .= "'" . db_escape($db, $opiskelija['visible']) . "',";
+    $sql .= "'" . db_escape($db, $opiskelija['koodi']) . "' ";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
 
@@ -423,8 +427,10 @@ function find_all_aiheet($options=[]) {
     shift_opiskelija_positions($old_position, $opiskelija['position'], $opiskelija['id']);
     $sql = "UPDATE opiskelijat SET ";
     $sql .= "menu_name='" . db_escape($db, $opiskelija['menu_name']) . "', ";
+    $sql .= "kurssi='" . db_escape($db, $opiskelija['kurssi']) . "', ";
     $sql .= "position='" . db_escape($db, $opiskelija['position']) . "', ";
-    $sql .= "visible='" . db_escape($db, $opiskelija['visible']) . "' ";
+    $sql .= "visible='" . db_escape($db, $opiskelija['visible']) . "', ";
+    $sql .= "koodi='" . db_escape($db, $opiskelija['koodi']) . "' ";
     $sql .= "WHERE id='" . db_escape($db, $opiskelija['id']) . "' ";
     $sql .= "LIMIT 1";
     $result = mysqli_query($db, $sql);
@@ -992,13 +998,14 @@ function find_all_aiheet($options=[]) {
     shift_tehtava_positions(0, $tehtava['position'], $tehtava['opiskelija_id']);
 
     $sql = "INSERT INTO tehtavat ";
-    $sql .= "(opiskelija_id, menu_name, position, visible, content) ";
+    $sql .= "(opiskelija_id, menu_name, position, visible, content, arvosana) ";
     $sql .= "VALUES (";
     $sql .= "'" . db_escape($db, $tehtava['opiskelija_id']) . "',";
     $sql .= "'" . db_escape($db, $tehtava['menu_name']) . "',";
     $sql .= "'" . db_escape($db, $tehtava['position']) . "',";
     $sql .= "'" . db_escape($db, $tehtava['visible']) . "',";
-    $sql .= "'" . db_escape($db, $tehtava['content']) . "'";
+    $sql .= "'" . db_escape($db, $tehtava['content']) . "',";
+    $sql .= "'" . db_escape($db, $tehtava['arvosana']) . "'";
     $sql .= ")";
     $result = mysqli_query($db, $sql);
     if($result) {
@@ -1027,7 +1034,8 @@ function find_all_aiheet($options=[]) {
     $sql .= "menu_name='" . db_escape($db, $tehtava['menu_name']) . "', ";
     $sql .= "position='" . db_escape($db, $tehtava['position']) . "', ";
     $sql .= "visible='" . db_escape($db, $tehtava['visible']) . "', ";
-    $sql .= "content='" . db_escape($db, $tehtava['content']) . "' ";
+    $sql .= "content='" . db_escape($db, $tehtava['content']) . "', ";
+    $sql .= "arvosana='" . db_escape($db, $tehtava['arvosana']) . "' ";
     $sql .= "WHERE id='" . db_escape($db, $tehtava['id']) . "' ";
     $sql .= "LIMIT 1";
 

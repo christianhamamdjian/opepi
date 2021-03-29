@@ -15,7 +15,7 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/index.php'); ?>">&laquo; Takaisin listalle</a>
 
   <div class="opiskelija show">
 
@@ -39,7 +39,7 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
     <hr />
 
     <div class="tehtavat listing">
-      <h2>tehtavat</h2>
+      <h2>Tehtävät</h2>
 
       <div class="actions">
         <a class="action" href="<?php echo url_for('/staff/tehtavat/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Luo uusi tehtava</a>
@@ -50,10 +50,11 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
           <th>ID</th>
           <th>Position</th>
           <th>Visible</th>
-          <th>Name</th>
+          <th>Tehtävät</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
+          <th>Arvosana</th>
         </tr>
 
         <?php while($tehtava = mysqli_fetch_assoc($tehtava_set)) { ?>
@@ -66,6 +67,7 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
             <td><a class="action" href="<?php echo url_for('/staff/tehtavat/show.php?id=' . h(u($tehtava['id']))); ?>">View</a></td>
             <td><a class="action" href="<?php echo url_for('/staff/tehtavat/edit.php?id=' . h(u($tehtava['id']))); ?>">Edit</a></td>
             <td><a class="action" href="<?php echo url_for('/staff/tehtavat/delete.php?id=' . h(u($tehtava['id']))); ?>">Delete</a></td>
+            <td><?php echo h($tehtava['arvosana']); ?></td>
           </tr>
         <?php } ?>
       </table>

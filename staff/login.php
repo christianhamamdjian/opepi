@@ -4,11 +4,13 @@ require_once('../private/initialize.php');
 $errors = [];
 $username = '';
 $password = '';
+$role = '';
 
 if(is_post_request()) {
 
   $username = $_POST['username'] ?? '';
   $password = $_POST['password'] ?? '';
+  $role = $_POST['role'] ?? '';
 
   // Validations
   if(is_blank($username)) {

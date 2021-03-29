@@ -12,6 +12,7 @@ if(is_post_request()) {
 
   $opettaja = [];
   $opettaja['menu_name'] = $_POST['menu_name'] ?? '';
+  $opettaja['koodi'] = $_POST['koodi'] ?? '';
   $opettaja['position'] = $_POST['position'] ?? '';
   $opettaja['visible'] = $_POST['visible'] ?? '';
 
@@ -28,6 +29,7 @@ if(is_post_request()) {
   // display the blank form
   $opettaja = [];
   $opettaja["menu_name"] = '';
+  $opettaja["koodi"] = '';
   $opettaja["position"] = $opettaja_count;
   $opettaja["visible"] = '';
 }
@@ -48,8 +50,12 @@ if(is_post_request()) {
 
     <form action="<?php echo url_for('/staff/opettajat/new.php'); ?>" method="post">
       <dl>
-        <dt>Menu Name</dt>
+        <dt>Nimi</dt>
         <dd><input type="text" name="menu_name" value="<?php echo h($opettaja['menu_name']); ?>" /></dd>
+      </dl>
+      <dl>
+        <dt>Koodi</dt>
+        <dd><input type="text" name="koodi" value="<?php echo h($opettaja['koodi']); ?>" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>

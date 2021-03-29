@@ -23,7 +23,7 @@ $aihe = find_aihe_by_id($sivu['aihe_id']);
     <h1>sivu: <?php echo h($sivu['menu_name']); ?></h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/index.php?sivu_id=' . h(u($sivu['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
+      <a class="action" href="<?php echo url_for('/index.php?sivu_id=' . h(u($sivu['id'])) . '&preview=true'); ?>" target="_blank">Esikatsele</a>
     </div>
 
     <div class="attributes">

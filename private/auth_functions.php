@@ -7,6 +7,7 @@
     $_SESSION['admin_id'] = $admin['id'];
     $_SESSION['last_login'] = time();
     $_SESSION['username'] = $admin['username'];
+    $_SESSION['role'] = $admin['role'];
     return true;
   }
 
@@ -15,6 +16,8 @@
     unset($_SESSION['admin_id']);
     unset($_SESSION['last_login']);
     unset($_SESSION['username']);
+    unset($_SESSION['role']);
+
     // session_destroy(); // optional: destroys the whole session
     return true;
   }

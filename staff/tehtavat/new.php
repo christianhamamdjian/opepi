@@ -30,6 +30,7 @@ if(is_post_request()) {
   $tehtava['position'] = '';
   $tehtava['visible'] = '';
   $tehtava['content'] = '';
+  $merkki['arvosana'] = '';
 
 }
 
@@ -42,10 +43,10 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']) + 1;
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtävä</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Takaisin opiskelijan tehtäviin</a>
 
   <div class="tehtava new">
-    <h1>Create tehtävä</h1>
+    <h1>Luo uusi tehtävä</h1>
 
     <?php echo display_errors($errors); ?>
     
@@ -102,6 +103,12 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']) + 1;
           <textarea name="content" cols="60" rows="10"><?php echo h($tehtava['content']); ?></textarea>
         </dd>
       </dl>
+      <?php if($_SESSION['role'] == "ope"){ ?>
+      <dl>
+        <dt>Arvosana</dt>
+        <dd><input type="text" name="arvosana" value="<?php echo h($tehtava['arvosana']); ?>" /></dd>
+      </dl>
+      <?php } ?>
       <div id="operations">
         <input type="submit" value="Create tehtävä" />
       </div>

@@ -12,10 +12,10 @@
 
 <div id="content">
   <div class="aiheet listing">
-    <h1>aiheet</h1>
+    <h1>Aiheet</h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/staff/aiheet/new.php'); ?>">Create New aihe</a>
+      <a class="action" href="<?php echo url_for('/staff/aiheet/new.php'); ?>">Luo uusi aihe</a>
     </div>
 
   	<table class="list">
