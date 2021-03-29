@@ -550,7 +550,9 @@ a.learnmore:hover {
       color: rgb(0, 0, 0);
       background-color: rgba(0, 91, 175, 0.7);
     }
-  
+    #menu > ul > li > .submenu {
+      width: 200px;
+    }
 
 }
 
