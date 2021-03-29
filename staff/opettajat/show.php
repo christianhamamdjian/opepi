@@ -15,7 +15,7 @@ $kurssi_set = find_kurssit_by_opettaja_id($id);
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opettajat/index.php'); ?>">&laquo; Back to List</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opettajat/index.php'); ?>">&laquo; Takaisin listalle</a>
 
   <div class="opettaja show">
 

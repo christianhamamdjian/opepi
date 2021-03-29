@@ -16,14 +16,14 @@ $opiskelija = find_opiskelija_by_id($tehtava['opiskelija_id']);
 
 <div id="content">
 
-  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($opiskelija['id']))); ?>">&laquo; Back to opiskelija tehtava</a>
+  <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($opiskelija['id']))); ?>">&laquo; Takaisin opiskelijan tehtäviin</a>
 
   <div class="tehtava show">
 
     <h1>tehtava: <?php echo h($tehtava['menu_name']); ?></h1>
 
     <div class="actions">
-      <a class="action" href="<?php echo url_for('/index.php?tehtava_id=' . h(u($tehtava['id'])) . '&preview=true'); ?>" target="_blank">Preview</a>
+      <a class="action" href="<?php echo url_for('/index.php?tehtava_id=' . h(u($tehtava['id'])) . '&preview=true'); ?>" target="_blank">Esikatsele</a>
     </div>
 
     <div class="attributes">

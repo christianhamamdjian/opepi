@@ -18,10 +18,11 @@ if(is_post_request()) {
   $tehtava['position'] = $_POST['position'] ?? '';
   $tehtava['visible'] = $_POST['visible'] ?? '';
   $tehtava['content'] = $_POST['content'] ?? '';
+  $tehtava['arvosana'] = $_POST['arvosana'] ?? '';
 
   $result = update_tehtava($tehtava);
   if($result === true) {
-    $_SESSION['message'] = 'The tehtava was updated successfully.';
+    $_SESSION['message'] = 'The tehtävä was updated successfully.';
     redirect_to(url_for('/staff/tehtavat/show.php?id=' . $id));
   } else {
     $errors = $result;
@@ -45,7 +46,7 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']);
   <a class="back-link" href="<?php echo url_for('/staff/opiskelijat/show.php?id=' . h(u($tehtava['opiskelija_id']))); ?>">&laquo; Back to opiskelija tehtava</a>
 
   <div class="tehtava edit">
-    <h1>Edit tehtava</h1>
+    <h1>Edit tehtävä</h1>
 
     <?php echo display_errors($errors); ?>
 
@@ -101,6 +102,12 @@ $tehtava_count = count_tehtavat_by_opiskelija_id($tehtava['opiskelija_id']);
           <textarea name="content" cols="60" rows="10"><?php echo h($tehtava['content']); ?></textarea>
         </dd>
       </dl>
+      <?php if($_SESSION['role'] == "ope"){ ?>
+      <dl>
+        <dt>Arvosana</dt>
+        <dd><input type="text" name="arvosana" value="<?php echo h($tehtava['arvosana']); ?>" /></dd>
+      </dl>
+      <?php } ?>
       <div id="operations">
         <input type="submit" value="Edit tehtava" />
       </div>
