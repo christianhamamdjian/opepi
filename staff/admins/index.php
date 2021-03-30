@@ -19,7 +19,7 @@ $admin_set = find_all_admins();
       <a class="action" href="<?php echo url_for('/staff/admins/new.php'); ?>">Create New Admin</a>
     </div>
 
-    <table class="list">
+    <table class="admin list ">
       <tr>
         <th>ID</th>
         <th>First</th>

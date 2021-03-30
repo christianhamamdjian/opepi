@@ -45,7 +45,7 @@ $sivu_set = find_sivut_by_aihe_id($id);
         <a class="action" href="<?php echo url_for('/staff/sivut/new.php?aihe_id=' . h(u($aihe['id']))); ?>">Luo uusi sivu</a>
       </div>
 
-      <table class="list">
+      <table class="list sivut">
         <tr>
           <th>ID</th>
           <th>Position</th>

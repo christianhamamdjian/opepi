@@ -17,11 +17,13 @@
         $opilink = url_for('/staff/opiskelijat/index.php');
         $aihelink = url_for('/staff/aiheet/index.php');
         $adminlink = url_for('/staff/admins/index.php');
+        $palautelink = url_for('/staff/admins/palautteet.php');
         if($_SESSION['role'] == "admin"){
             echo "<li><a href=".$opelink.">Opettajat</a></li>";
             echo "<li><a href=".$opilink.">Opiskelijat</a></li>";
             echo "<li><a href=".$aihelink.">Aiheet</a></li>";
             echo "<li><a href=".$adminlink.">Admins</a></li>"; 
+            echo "<li><a href=".$palautelink.">Palaute</a></li>"; 
         }elseif($_SESSION['role'] == "ope"){
             echo "<li><a href=" .$opelink. ">Opettajan kurssit</a></li>";
             //echo "<li><a href=".$opilink.">Opiskelijat</a></li>";

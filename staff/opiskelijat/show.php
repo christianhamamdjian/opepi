@@ -45,7 +45,7 @@ $tehtava_set = find_tehtavat_by_opiskelija_id($id);
         <a class="action" href="<?php echo url_for('/staff/tehtavat/new.php?opiskelija_id=' . h(u($opiskelija['id']))); ?>">Luo uusi tehtava</a>
       </div>
 
-      <table class="list">
+      <table class="list tehtavat">
         <tr>
           <th>ID</th>
           <th>Position</th>
