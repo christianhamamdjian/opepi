@@ -23,7 +23,7 @@
 <?php if($_SESSION['role'] == "ope"){ ?>
     <h1>Opettajan kurssit</h1>
 <?php } ?>
-  	<table class="list">
+  	<table class="list ope">
   	  <tr>
         <th>ID</th>
         <th>Position</th>

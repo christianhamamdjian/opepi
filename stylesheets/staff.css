@@ -1,3 +1,7 @@
+:root {
+  --primary: #ffc636;
+  --secondary: #ffffff;
+}
 html {
   height: 100%;
   width: 100%;
@@ -8,6 +12,7 @@ body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: rgb(236, 233, 216);
 }
 a{
   text-decoration: none;
@@ -214,7 +219,22 @@ dd {
 .header__wrapper a{
   text-decoration:none;
 }
+.button {
+  background: none;
+  border: none;
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 11px 24px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
 
+.button:hover {
+  color: #222;
+}
 /* burger nav */
 /* Menu toggle target */
 
@@ -316,21 +336,75 @@ color: rgb(0, 0, 0);
 .submenu > li:hover > a {
 color: rgb(0, 0, 0);
 }
+
+
 table {
   margin: 0 0 2em 0;
   width: 100%;
   color: #000000;
   background-color: rgb(255, 255, 255);
+  border-collapse:collapse;
+-webkit-border-horizontal-spacing: 0px;
+-webkit-border-vertical-spacing: 0px;
 }
 
 table tbody tr {
-  border: solid 0px rgb(255, 255, 255);
-  border-left: 0;
-  border-right: 0;
+  border: 0px solid  rgb(218, 215, 215);
+  /* border-left: 0;
+  border-right: 0; */
 }
 
-table tbody tr:nth-child(2n + 1) {
+table tbody tr td{
+  border: 1px solid  rgb(241, 241, 241);
+  /* border-left: 0;
+  border-right: 0; */
+}
+table th {
+  background-color: rgba(0, 30, 199, 0.555);
+}
+table tbody tr:nth-child(2n + 1){
   background-color: rgb(241, 241, 241);
+}
+table.palaute tbody tr:nth-child(2n + 1) {
+  background-color: rgb(241, 241, 241);
+}
+table.palaute th {
+  background-color: rgb(161, 177, 212);
+}
+
+table.ope tbody tr:nth-child(2n + 1){
+  background-color: rgb(241, 241, 241);
+}
+table.ope th {
+  background-color: rgba(0, 30, 199, 0.555);
+}
+
+table.opi tbody tr:nth-child(2n + 1) {
+  background-color: rgb(241, 241, 241);
+}
+table.opi th {
+  background-color: rgba(228, 111, 33, 0.534);
+}
+
+table.tehtavat tbody tr:nth-child(2n + 1) {
+  background-color: rgb(241, 241, 241);
+}
+table.tehtavat th {
+  background-color: rgba(199, 169, 0, 0.555);
+}
+
+table.kurssit tbody tr:nth-child(2n + 1) {
+  background-color: rgb(241, 241, 241);
+}
+table.kurssit th {
+  background-color: rgba(83, 146, 0, 0.555);
+}
+
+table.aiheet tbody tr:nth-child(2n + 1) {
+  background-color: rgb(241, 241, 241);
+}
+table.aiheet th {
+  background-color: rgba(0, 176, 199, 0.555);
 }
 
 table td {
@@ -342,7 +416,7 @@ table th {
   font-size: 0.9em;
   font-weight: bold;
   padding: 0.75em;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
 }
 

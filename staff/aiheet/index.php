@@ -18,7 +18,7 @@
       <a class="action" href="<?php echo url_for('/staff/aiheet/new.php'); ?>">Luo uusi aihe</a>
     </div>
 
-  	<table class="list">
+  	<table class="list aiheet">
   	  <tr>
         <th>ID</th>
         <th>Position</th>

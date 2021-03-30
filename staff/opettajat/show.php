@@ -45,7 +45,7 @@ $kurssi_set = find_kurssit_by_opettaja_id($id);
         <a class="action" href="<?php echo url_for('/staff/kurssit/new.php?opettaja_id=' . h(u($opettaja['id']))); ?>">Luo uusi kurssi</a>
       </div>
 
-      <table class="list">
+      <table class="list kurssit">
         <tr>
           <th>ID</th>
           <th>Position</th>

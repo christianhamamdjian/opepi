@@ -52,17 +52,21 @@ if(is_post_request()) {
 <?php include(SHARED_PATH . '/staff_header.php'); ?>
 
 <div id="content">
-  <h1>Log in</h1>
+<a class="back-link" href="<?php echo url_for('/index.php'); ?>">&laquo; Takaisin etusivulle</a>
+
+  <h1>Kirjaudu sisään</h1>
 
   <?php echo display_errors($errors); ?>
 
-  <form action="login.php" method="post">
-    Username:<br />
+  <form action="login.php" method="post" style="width:30%; margin-left:80px;">
+    Käyttäyätunnus:<br />
     <input type="text" name="username" value="<?php echo h($username); ?>" /><br />
-    Password:<br />
+    Salasana:<br />
     <input type="password" name="password" value="" /><br />
-    <input type="submit" name="submit" value="Submit"  />
+    <input type="submit" name="submit" class="button" value="Lähetä"  />
   </form>
+  <br>
+<a style="font-size:0.8rem;" href="register.php">Et ole käyttäjä? Kirjautu täältä &#62;&#62;></a>
 
 </div>
 
