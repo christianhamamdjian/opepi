@@ -12,7 +12,7 @@ body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: rgb(236, 233, 216);
+  background-color: rgb(245, 244, 237);
 }
 a{
   text-decoration: none;
@@ -36,7 +36,7 @@ header {
   height: 40px;
   margin: 0 0 10px 0;
   padding: 0;
-  background: #000;
+  background: rgba(81, 140, 232, 0.9);
   color: white;
 }
 
@@ -78,7 +78,7 @@ navigation ul li a{
 
 #main-menu > ul > li{
   list-style:none;
-  background:#000;
+  background:rgba(81, 140, 232, 0.9);
   display:inline-block;
   padding:12px 35px;
   width:auto;
@@ -88,7 +88,7 @@ navigation ul li a{
   margin:12px;
 }
 #main-menu > ul > li:hover{
-  background:rgb(78, 78, 78);
+  background:rgba(54, 95, 161, 0.9);
 }
 #main-menu > ul > li a{
   color:#fff;
@@ -105,7 +105,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #000000;
+  background-color: rgba(62, 108, 182, 0.9);
   color: white;
   text-align: center;
   padding:12px;
