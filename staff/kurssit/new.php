@@ -69,7 +69,7 @@ $kurssi_count = count_kurssit_by_opettaja_id($kurssi['opettaja_id']) + 1;
         </dd>
       </dl>
       <dl>
-        <dt>Menu Name</dt>
+        <dt>Nimi</dt>
         <dd><input type="text" name="menu_name" value="<?php echo h($kurssi['menu_name']); ?>" /></dd>
       </dl>
       <dl>
